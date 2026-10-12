@@ -66,7 +66,15 @@ export default buildConfig({
     Users,
   ],
   cors: [getServerSideURL()].filter(Boolean),
-  plugins: [...plugins],
+  plugins: [
+    ...plugins,
+    vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
   globals: [Header, Footer],
   secret: process.env.PAYLOAD_SECRET,
   typescript: {
@@ -87,13 +95,4 @@ export default buildConfig({
     },
     tasks: [],
   },
-  plugins: [
-    ...plugins,
-    vercelBlobStorage({
-      collections: {
-        media: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
-  ],
 })
